@@ -693,7 +693,7 @@ This variable override `its-delete-by-keystroke'."
 
 (defun its-map-compaction (map)
   (if its-compaction-enable
-      (let ((its-compaction-hash-table (make-vector 1000 nil))
+      (let ((its-compaction-hash-table (obarray-make 1000))
 	    (its-compaction-integer-table (make-vector 138 nil))
 	    (its-compaction-counter-1 1)
 	    (its-compaction-counter-2 0)
@@ -1355,8 +1355,8 @@ Return last state."
   (interactive)
   (its-convert (lambda (str lang) (japanese-katakana str))))
 
-(defconst its-full-half-table (make-vector 100 nil))
-(defconst its-half-full-table (make-vector 100 nil))
+(defconst its-full-half-table (obarray-make 100))
+(defconst its-half-full-table (obarray-make 100))
 
 (let ((table '((Japanese
 		(?　 . ?\ ) (?， . ?,)  (?． . ?.)  (?、 . ?,)  (?。 . ?.)
@@ -1466,7 +1466,7 @@ Return last state."
 		(?ｐ . ?p)  (?ｑ . ?q)  (?ｒ . ?r)  (?ｓ . ?s)  (?ｔ . ?t)
 		(?ｕ . ?u)  (?ｖ . ?v)  (?ｗ . ?w)  (?ｘ . ?x)  (?ｙ . ?y)
 		(?ｚ . ?z))))
-      (hash (make-vector 100 nil))
+      (hash (obarray-make 100))
       lang pair)
   (while table
     (setq lang (caar table)
