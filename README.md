@@ -183,8 +183,26 @@ EMACS=/Applications/Emacs.app/Contents/MacOS/Emacs scripts/compile.sh
 | C-n / C-p | — | 次 / 前の候補 |
 | C-k | カーソルから後ろを削除 | カーソルより前の文節だけ確定 |
 | M-h / M-k | ひらがな / カタカナ | ひらがな / カタカナ |
+| M-< / M-> | 英数字を半角 / 全角に | 半角（半角カタカナ、半角数字） / 全角（全角数字、全角英字） |
 | M-s | — | 候補一覧から選ぶ |
 | C-c / C-g | 入力を取り消す | 変換を取り消す（入力中に戻る） |
+
+### 全角数字と半角カタカナの候補
+
+Mozc は「１２３」「１語」のような全角数字や、「ｶｲｷﾞ」のような半角カタカナも候補に出しますが、
+egg-mozc では既定でこれらを候補一覧（SPC、C-n、M-s）から外しています。
+入力したいときは、変換中に `M-<`（半角）や `M->`（全角）を押します。
+
+- 「会議」「カイギ」で `M-<` → 「ｶｲｷﾞ」
+- 「123」「1語」で `M->` → 「１２３」「１語」
+
+隠す候補は `egg-mozc-hidden-candidate-regexp`（正規表現）で変えられます。
+`nil` にすると、Mozc の候補をすべて出します。
+
+```elisp
+(setq egg-mozc-hidden-candidate-regexp nil)                 ; すべて出す
+(setq egg-mozc-hidden-candidate-regexp "[\uff61-\uff9f]")  ; 半角カタカナだけ隠す
+```
 
 ### 単語登録
 

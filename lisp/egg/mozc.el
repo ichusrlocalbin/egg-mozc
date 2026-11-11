@@ -13,9 +13,10 @@
 ;; Mozc とは mozc.el（Google）の helper プロセス（mozc_emacs_helper）で通信する。
 ;; helper はキー入力しか受け付けないので、各要求をキー入力に置き換える。
 ;;
-;;   変換開始   読み（ひらがな）を key_string でまとめて送り、Space
+;;   変換開始   読み（ひらがな）を key_string だけでまとめて送り、Space
 ;;   文節を選ぶ Home のあと Right を n 回
-;;   候補一覧   出力の all-candidate-words
+;;   候補一覧   出力の all-candidate-words（`egg-mozc-hidden-candidate-regexp' に
+;;              合うものは隠す。M-< / M-> で呼び出せる）
 ;;   候補を選ぶ Down / Up を差の回数だけ
 ;;   文節の伸縮 Shift+Left / Shift+Right を差の回数だけ
 ;;   確定       Enter（Mozc が学習する）。中止や一部だけの確定は Escape
@@ -39,6 +40,14 @@
 (defcustom egg-mozc-debug nil
   "non-nil なら、Mozc に送ったキーと文節を *Messages* に出す。"
   :type 'boolean
+  :group 'egg-mozc-backend)
+
+(defcustom egg-mozc-hidden-candidate-regexp "[０-９\uff61-\uff9f]"
+  "この正規表現に合う候補は、候補一覧（Space、C-n、M-s など）に出さない。
+既定では全角数字（１２３）と半角カタカナ（ｶﾅ）を含む候補を隠す。
+隠した候補も、変換中に M-<（半角）や M->（全角）で選べる。
+nil なら、Mozc の候補をすべて出す。"
+  :type '(choice (const :tag "すべて出す" nil) regexp)
   :group 'egg-mozc-backend)
 
 ;;; Egg への登録
@@ -138,7 +147,9 @@
   index             ; セッションの中での文節の番号（0 から）
   reading           ; 読み
   surface           ; 変換直後の文字列
-  candidates        ; 候補の文字列のリスト（取得するまでは nil）
+  all               ; Mozc の候補の文字列のリスト（取得するまでは nil）
+  candidates        ; そのうち Egg に見せる候補のリスト
+  indices           ; candidates のそれぞれが all の何番目か
   (selected 0))     ; candidates の中で選ばれている番号
 
 (defun egg-mozc--clause (bunsetsu)
@@ -171,8 +182,37 @@
       (setq found (egg-mozc--candidates (egg-mozc--send session 'up))))
     (unless found
       (setq found (list 0 (egg-mozc--clause-surface clause))))
-    (setf (egg-mozc--clause-selected clause) (car found)
-          (egg-mozc--clause-candidates clause) (cdr found))))
+    (let ((focused (car found)) words indices)
+      ;; 隠す候補を除く。ただし Mozc が今選んでいる候補（変換結果）は残す
+      (cl-loop for word in (cdr found)
+               for i from 0
+               when (or (= i focused) (not (egg-mozc--hidden-p word)))
+               do (push word words) (push i indices))
+      (setf (egg-mozc--clause-all clause) (cdr found)
+            (egg-mozc--clause-candidates clause) (nreverse words)
+            (egg-mozc--clause-indices clause) (nreverse indices)
+            (egg-mozc--clause-selected clause)
+            (or (cl-position focused (egg-mozc--clause-indices clause)) 0)))))
+
+(defun egg-mozc--hidden-p (word)
+  (and egg-mozc-hidden-candidate-regexp
+       (string-match-p egg-mozc-hidden-candidate-regexp word)))
+
+(defun egg-mozc--reveal (clause i)
+  "Mozc の I 番目の候補を CLAUSE の候補に加え（隠していた場合）、その番号を返す。"
+  (let ((indices (egg-mozc--clause-indices clause)))
+    (or (cl-position i indices)
+        (let ((pos (cl-count-if (lambda (j) (< j i)) indices))
+              (word (nth i (egg-mozc--clause-all clause))))
+          (when (<= pos (egg-mozc--clause-selected clause))
+            (cl-incf (egg-mozc--clause-selected clause)))
+          (setf (egg-mozc--clause-candidates clause)
+                (append (cl-subseq (egg-mozc--clause-candidates clause) 0 pos)
+                        (list word)
+                        (nthcdr pos (egg-mozc--clause-candidates clause)))
+                (egg-mozc--clause-indices clause)
+                (append (cl-subseq indices 0 pos) (list i) (nthcdr pos indices)))
+          pos))))
 
 ;;; Egg から呼ばれる関数
 
@@ -193,8 +233,9 @@
   ;; Mozc の読みはひらがななので、カタカナで入力された読みもひらがなにする
   (let ((reading (japanese-hiragana (substring-no-properties reading)))
         (session (egg-mozc--open-session)))
-    ;; mozc_emacs_helper のキーは ASCII である必要がある。読みは key_string で渡す
-    (egg-mozc--send session ?a reading)
+    ;; 読みは key_string だけで渡す。キーコードを添えると、そのキーの英字
+    ;; （a、A、ａ、Ａ など）が候補に混ざる
+    (egg-mozc--send session reading)
     (or (egg-mozc--bunsetsu-list session (egg-mozc--send session 'space) 0)
         (list (egg-bunsetsu-create
                'egg-mozc-backend
@@ -216,9 +257,10 @@
          (session (egg-mozc--clause-session clause)))
     (unless (egg-mozc--clause-candidates clause)
       (egg-mozc--fetch-candidates clause))
-    (let* ((current (or (car (egg-mozc--candidates (egg-mozc--focus clause)))
-                        (egg-mozc--clause-selected clause)))
-           (steps (- pos current)))
+    (let* ((target (nth pos (egg-mozc--clause-indices clause)))
+           (current (or (car (egg-mozc--candidates (egg-mozc--focus clause)))
+                        target))
+           (steps (- target current)))
       (dotimes (_ (abs steps))
         (egg-mozc--send session (if (> steps 0) 'down 'up))))
     (setf (egg-mozc--clause-selected clause) pos)
@@ -253,19 +295,42 @@
             (egg-mozc--send session 'escape))))
       (egg-mozc--close-session session))))
 
-(defun egg-mozc-special-candidate (bunsetsu-list prev-b next-b major type)
-  "ひらがな（`egg-hiragana'）・カタカナ（`egg-katakana'）にする。"
-  (let* ((reading (egg-mozc-bunsetsu-source (car bunsetsu-list)))
-         (wanted (pcase type
-                   ('egg-hiragana reading)
-                   ('egg-katakana (japanese-katakana reading))))
-         (pos (and wanted
-                   (cl-position wanted
-                                (cdr (egg-mozc-list-candidates
-                                      bunsetsu-list prev-b next-b major))
-                                :test #'equal))))
-    (and pos
-         (egg-mozc-decide-candidate bunsetsu-list pos prev-b next-b))))
+(defun egg-mozc-special-candidate (bunsetsu-list prev-b next-b _major type)
+  "TYPE の候補を選ぶ。TYPE はキーに対応するコマンドの名前。
+  `egg-hiragana'          ひらがな（M-h）
+  `egg-katakana'          カタカナ（M-k）
+  `egg-mozc-half-width'   半角（M-<）。かな・漢字なら読みの半角カタカナ
+  `egg-mozc-full-width'   全角（M->）。数字や英字を全角に
+隠している候補（`egg-mozc-hidden-candidate-regexp'）も選べる。"
+  (let* ((clause (egg-mozc--clause (car bunsetsu-list)))
+         (reading (egg-mozc--clause-reading clause)))
+    (unless (egg-mozc--clause-candidates clause)
+      (egg-mozc--fetch-candidates clause))
+    (let* ((current (egg-mozc-bunsetsu-converted (car bunsetsu-list)))
+           (wanted
+            (pcase type
+              ('egg-hiragana reading)
+              ('egg-katakana (japanese-katakana reading))
+              ('egg-mozc-half-width
+               (let ((half (japanese-hankaku (japanese-katakana current))))
+                 (if (equal half current)
+                     (japanese-hankaku (japanese-katakana reading))
+                   half)))
+              ('egg-mozc-full-width (japanese-zenkaku current))))
+           (i (and wanted (cl-position wanted (egg-mozc--clause-all clause)
+                                       :test #'equal))))
+      (and i
+           (egg-mozc-decide-candidate bunsetsu-list (egg-mozc--reveal clause i)
+                                      prev-b next-b)))))
+
+;; 変換中のキー。M-h / M-k と同じしくみ（`egg-hiragana'）で、コマンド名が種類になる
+(defalias 'egg-mozc-half-width 'egg-hiragana
+  "変換中の文節を半角にする（半角カタカナ、半角数字など）。")
+(defalias 'egg-mozc-full-width 'egg-hiragana
+  "変換中の文節を全角にする（全角数字、全角英字など）。")
+(with-eval-after-load 'egg-cnv
+  (define-key egg-conversion-map "\M-<" 'egg-mozc-half-width)
+  (define-key egg-conversion-map "\M->" 'egg-mozc-full-width))
 
 ;;; 単語登録
 
