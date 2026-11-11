@@ -1,0 +1,2 @@
+tamago-tsunagi/** -text -diff
+tamago-tsunagi/**/*.el diff

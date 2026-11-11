@@ -1,0 +1,206 @@
+2015-02-03  Mitsutoshi NAKANO  <bkbin005@rinku.zaq.ne.jp>
+
+	* ChangeLog(2015-02-03): fixed typo
+	(2015-02-02): fixed typo
+
+	* egg.el(egg-version): updated 5.0.7.0 -> 5.0.7.1
+	* egg-anthy.readme: removed it (#34871)
+	https://sourceforge.jp/ticket/browse.php?group_id=9668&tid=34871
+	Hideyuki SHIRAI <shirai@meadowy.org> said that it is too old.
+	https://sourceforge.jp/projects/tamago-tsunagi/lists/archive/misc/2015-February/000109.html
+	So removed it.
+	* NEWS(5.0.7.1): added
+
+2015-02-02  Mitsutoshi NAKANO  <bkbin005@rinku.zaq.ne.jp>
+
+	* egg.el(egg-version): updated 5.0.6.0 -> 5.0.7.0
+	* NEWS: added 5.0.7.0
+
+	*** imported FreeBSD's tamago-emacs24-4.0.6.0.20041122.19_12. (#34861)
+	Hiroki Sato <hrs@allbsd.org> updated FreeBSD' tamago.
+	So I imported it.
+
+	** used (with-current-buffer) instead of (save-excursion)
+	* egg-com.el(pre-write-encode-fixed-euc-china)
+	(comm-call-with-proc)
+	* egg.el(egg-activate-keymap-after-command)
+	* egg/anthy.el(anthy-egg-new-environment)
+	(anthy-egg-add-word)
+	* egg/anthyipc.el(anthyipc-call-with-proc)
+	* egg/canna.el(canna-open)
+	* egg/cannarpc.el(cannarpc-call-with-environment)
+	* egg/sj3.el(sj3-open)
+	* egg/sj3rpc.el(sj3rpc-call-with-environment)
+	* egg/wnn.el(wnn-open)
+	* egg/wnnrpc.el(wnnrpc-file-receive)
+	* menudiag.el(menudiag-selection-goto-internal)
+
+	* egg.el(egg-mode): used (fboundp) insted of (boundp)
+	(egg-exit-from-minibuffer): used (fboundp) insted of (boundp)
+
+	* egg/canna.el(canna-make-backend): quoted (fboundp)'s argument
+	* egg/wnn.el(wnn-make-backend): quoted (fboundp)'s argument
+
+	* egg/anthy.el: added copyright 2015 Hiroki Sato <hrs@allbsd.org>
+	* egg/anthyipc.el: added copyright 2015 Hiroki Sato <hrs@allbsd.org>
+	* egg/canna.el: added copyright 2015 Hiroki Sato <hrs@allbsd.org>
+	* egg/cannarpc.el: added copyright 2015 Hiroki Sato <hrs@allbsd.org>
+	* egg/sj3.el: added copyright 2015 Hiroki Sato <hrs@allbsd.org>
+	* egg/sj3rpc.el: added copyright 2015 Hiroki Sato <hrs@allbsd.org>
+	* egg/wnn.el: added copyright 2015 Hiroki Sato <hrs@allbsd.org>
+
+
+	* egg.el(egg-version): updated 5.0.5.0 -> 5.0.6.0
+	* COPYING *.el */*.el: fixed FSF address (#34859)
+	http://sourceforge.jp/ticket/browse.php?group_id=9668&tid=34859
+	* *.el: */*.el: deleted Maintainer lines in sources (#34862)
+	http://sourceforge.jp/ticket/browse.php?group_id=9668&tid=34862
+	TOMURA Satoru said that he resigned as the maintainer.
+	And I found that Mr. NIIBE and Mr. SHIIRAI are maintainers in sources.
+	But tyey are not tamago-tsunagi's maintainers.
+	So we need to delete Maintainer lines in sources.
+	* COPYING: replased to https://www.gnu.org/licenses/gpl-2.0.txt (#34859)
+	* its/jiskana.el: fixed #34859
+	* its.el: fixed #34859 #34862
+	* its/pinyin.el: fixed #34859 #34862
+	* its/zenkaku.el: fixed #34859 #34862
+	* its/quanjiao.el: fixed #34859 #34862
+	* egg/wnn.el: fixed #34859 #34862
+	* its/hangul.el: fixed #34859 #34862
+	* its/ascii.el: fixed #34859 #34862
+	* egg/sj3rpc.el: fixed #34859 #34862
+	* egg-edep.el: fixed #34859 #34862
+	* its/zhuyin.el: fixed #34859 #34862
+	* its/hira.el: fixed #34859 #34862
+	* egg/canna.el: fixed #34859 #34862
+	* its-keydef.el: fixed #34859 #34862 and deleted duplicating Keywords
+	line
+	* menudiag.el: fixed #34859
+	* its/bixing.el: fixed #34859 #34862
+	* eggrc: fixed #34859 #34862
+	* its/hankata.el: fixed #34859 #34862
+	* its/thai.el: fixed #34859 #34862
+	* egg.el: fixed #34859
+	* its/erpin.el: fixed #34859 #34862
+	* leim-list.el: fixed #34859 #34862
+	* its/aynu.el: fixed #34859 #34862
+	* egg/cannarpc.el: fixed #34859 #34862
+	* its/jeonkak.el: fixed #34859 #34862
+	* egg/sj3.el: fixed #34859 #34862
+	* docomp.el: fixed #34859 #34862
+	* egg-cnv.el: fixed #34859 #34862
+	* egg-com.el: fixed #34859 #34862
+	* egg-mlh.el: fixed #34859 #34862
+	* egg-sim.el: fixed #34859
+	* egg-x0213.el: fixed #34859 #34862
+	* egg/anthy.el: fixed #34859 #34862
+	* egg/anthyipc.el: fixed #34859 #34862
+	* egg/wnnrpc.el: fixed #34859 #34862
+	* its/kata.el: fixed #34859
+	* jisx0213.el: fixed #34859 #34862
+	* NEWS: added 5.0.6.0
+
+2015-02-01  Mitsutoshi NAKANO  <bkbin005@rinku.zaq.ne.jp>
+
+	* egg.el(egg-version): release tsunagi-5.0.5.0
+	* egg.el(egg-exit-from-minibuffer): applied patch from
+	Hiroki Sato <hrs@allbsd.org>.
+	He found a modified leak in tamago-tsunagi.
+	https://sourceforge.jp/projects/tamago-tsunagi/lists/archive/misc/2015-February/000085.html
+	* NEWS: added 5.0.5.0 for (egg-exit-from-minibuffer)
+
+2015-01-31  Mitsutoshi NAKANO  <bkbin005@rinku.zaq.ne.jp>
+
+	* Makefile.in(datarootdir): defined @datarootdir@, fixed #34855
+	https://sourceforge.jp/ticket/browse.php?group_id=9668&tid=34855
+	When "autoreconf; ./configure; make install", the installation
+	directory changes to /emacs/site-lisp/egg/
+	from /usr/local/share/emacs/site-lisp/egg/.
+	Autoconf-2.69 dedines @lispdir@ as ${datarootdir}/emacs/site-lisp, but
+	Makefile.in undefined datarootdir.
+	* configure: reconfigured
+	* Makefile.in(distclean): added rm -rf autom4tc.cache/
+	* .gitignore: added /autom4te.cache.
+	And modified config.* to /config.*
+	* INSTALL: added that users need to customize Emacs to load leim-list
+	* menudiag.el(menudiag-select-internal): reverted to 2015-01-29.
+	Hiroki Sato <hrs@allbsd.org> said that it is not necessary.
+	https://sourceforge.jp/projects/tamago-tsunagi/lists/archive/misc/2015-January/000071.html
+
+2015-01-30  Mitsutoshi NAKANO  <bkbin005@rinku.zaq.ne.jp>
+
+	* Makefile.in(install-site): applied #34850 (install can not reinstall)
+	ARAI Shun-ichi <hermes@ceres.dti.ne.jp> found that "make install"
+	can not delete egg directory.
+	https://sourceforge.jp/ticket/browse.php?group_id=9668&tid=34850
+	He wrote a patch, so applied.
+	* Makefile.in: added copyright ARAI Shun-ichi <hermes@ceres.dti.ne.jp>
+	* Makefile.in: deleted old Maintaner
+	* NEWS: fixed typo: forgot changing the number of problems
+
+2015-01-29  Mitsutoshi NAKANO  <bkbin005@rinku.zaq.ne.jp>
+
+	* menudiag.el: fixed #34849 by Hiroki Sato <hrs@allbsd.org>
+	issue: when egg-toroku-region, can not select menu by numbers
+	https://sourceforge.jp/ticket/browse.php?group_id=9668&tid=34849
+	https://sourceforge.jp/projects/tamago-tsunagi/lists/archive/misc/2015-January/000037.html
+	patch:
+	https://sourceforge.jp/projects/tamago-tsunagi/lists/archive/misc/2015-January/000043.html
+	- added Hiroki Sato to copyright
+	* menudiag.el(menudiag-minibuffer-hook): added imput-method control
+	* menudiag.el(menudiag-select-internal): rebinded overriding-local-map
+	* menudiag.el: deleted Maintainer name
+	* egg-sim.el(make-char-list): rewrote ignore-errors in make char
+	ARAI Shun-ichi <hermes@ceres.dti.ne.jp> wrote better fix.
+	https://sourceforge.jp/projects/tamago-tsunagi/lists/archive/misc/2015-January/000036.html
+	So Mitsutoshi rewrote.
+	* egg-sim.el: added ARAI Shun-ichi <hermes@ceres.dti.ne.jp> to copyright
+	* NEWS(5.0.4.0): announced new version
+	* egg.el(egg-version): up from 5.0.2.0 to 5.0.4.0
+	* egg.el: added Mitsutoshi to copyright
+
+2015-01-28  Mitsutoshi NAKANO  <bkbin005@rinku.zaq.ne.jp>
+
+	* egg-sim.el(make-char-list): ignore-errors in make-char
+	  Please see:
+	  http://sourceforge.jp/projects/tamago-tsunagi/lists/archive/misc/2015-January/000029.html
+	* egg.el(egg-version): up from 5.0.1.0 to 5.0.2.0
+	* .gitignore: ignored TAGS
+	* Makefile.in(tags): added tags entry
+	* NEWS(5.0.2.0): created
+
+2014-12-15  Mitsutoshi NAKANO  <bkbin005@rinku.zaq.ne.jp>
+
+	* egg.el: egg-version: change version to "5.0.1.0"
+
+	* Makefile.in, egg-cnv.el, egg-com.el, egg-mlh.el, egg-sim.el, egg/anthy.el, egg/canna.el, egg/sj3.el, egg/wnn.el, its.el, menudiag.el:
+	merge from tamago-emacs24-4.0.6.0.20041122.19_8.
+	Hiroshi Sato <hrs@freebsd.org> changed FreeBSD's tamago:
+	  - Fix warnings.
+	  - Fix warnings due to use of obsolete functions.
+	  - Style fixes.
+
+2014-12-13  Mitsutoshi NAKANO  <bkbin005@rinku.zaq.ne.jp>
+
+	* egg.el: egg-version: change version to "5.0.0.1"
+	* INSTALL: add.
+	* README.ja.UTF-8.txt: rename from README.ja.txt
+	* README.ja.UTF-8.txt: rewrite document.
+
+2014-11-17  Mitsutoshi NAKANO  <bkbin005@rinku.zaq.ne.jp>
+
+	* egg.el: egg-version: change version string to "5.0.0.0".
+	* Makefile.in, egg-cnv.el, egg.el, egg/anthy.el, egg/canna.el, egg/sj3.el, egg/wnn.el, its.el, leim-list.el, menudiag.el: change version.
+	  4 -> 5 or tsunagi.
+
+2014-11-16  Mitsutoshi NAKANO  <bkbin005@rinku.zaq.ne.jp>
+	* ChangeLog: rename to ChangeLog.2002-2004.
+	* ChangeLog: create new file.
+	* egg-cnv.el, its/kata.el: add copyright notice.
+	  gniibe said that these files have wrong copyright information.
+	  So added notice.
+	  See also:
+	  http://lists.debian.or.jp/debian-devel/201411/msg00034.html
+	  http://sourceforge.jp/projects/tamago-tsunagi/lists/archive/misc/2014-Nov
+	  https://anonscm.debian.org/git/pkg-anthy/egg.git/
+	* egg.el: add egg-tsunagi-version.
