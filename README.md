@@ -136,6 +136,25 @@ Mach サービスで通信します。そのため IME 本体を入れない場�
 
 どちらの方法でも、helper（`mozc_emacs_helper`）は `scripts/install.sh` がインストールしたものが使われます。
 
+### 4. Egg のバイトコンパイル（optional）
+
+同梱の Egg は、コンパイルしなくてもそのまま動きます。コンパイルすると読み込みが速くなります
+（Emacs 30 以降では、さらにネイティブコンパイルも自動で行われます）。
+
+```bash
+EMACS=/Applications/Emacs-31.1.app/Contents/MacOS/Emacs scripts/compile.sh
+```
+
+- `EMACS` には、egg-mozc を使う Emacs（30 以降）を指定します。`.elc` は、それを読み込む Emacs と
+  同じバージョンでコンパイルする必要があります（PATH の `emacs` が古い場合は止まります）。
+- Wnn、Canna、SJ3、Anthy 用のファイル（`tamago-tsunagi/egg/`）は使わないのでコンパイルしません。
+- Egg の `.el` を変更したり `git pull` したりしたら、もう一度実行してください。Emacs の既定では、
+  `.el` のほうが新しくても `.elc` が優先して読み込まれます。
+- コンパイルしたあと最初に起動したときに、ネイティブコンパイルの警告（「関数の定義が見つからない」など）が
+  `*Warnings*` に出ることがあります。Egg のファイル同士が互いの関数を使っているためで、動作には影響しません。
+- `.elc` を消すときは `scripts/clean.sh --elc` を使います（`scripts/clean.sh` だけでは `build/` しか消しません。
+  両方を消すときは `--all`）。
+
 ## 使い方
 
 `C-\` で入力をオン・オフします。キー操作は Egg と同じです。
