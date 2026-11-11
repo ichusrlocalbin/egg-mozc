@@ -29,6 +29,20 @@ egg-mozc は、Mozc と通信するために Google の `mozc.el` を使いま�
 `scripts/build.sh` が Mozc のソースから取り出してインストールするので、別に用意する必要はありません
 （MELPA の `mozc` パッケージを使うこともできます。後述）。
 
+### 動作を確認した環境（2026-11）
+
+| 項目 | バージョン |
+|---|---|
+| macOS | 27.0.1（Apple Silicon、arm64） |
+| Xcode | 27.1 |
+| GNU Emacs | 31.1 |
+| Mozc | 3.35.6354.101（コミット `a4541df`、2026-11-09。`scripts/mozc-commit`） |
+| Bazel | 9.0.2（Mozc の `.bazeliskrc` の指定を Bazelisk が取得） |
+| mozc.el | MELPA の mozc 20261016.1233 で普段使いを確認。ビルドで作られる `mozc.el` では、変換ができることだけを確認 |
+| tamago-tsunagi | 5.0.7.1 ＋ このリポジトリの修正 |
+
+これ以外の環境では試していません。
+
 ## インストール
 
 ### 1. 取得とビルド
@@ -261,6 +275,7 @@ egg-mozc は、ビルドする Mozc を `scripts/mozc-commit` に書いたコミ
 Mozc の新しい版（辞書の更新やバグ修正）を取り込みたいときだけ、次のようにします。
 
 **以下は想定している手順で、実際に新しい版で試したわけではありません。**
+動作を確認した Mozc のバージョンは「動作を確認した環境」を参照してください。
 
 1. `scripts/mozc-commit` を、取り込みたい Mozc のコミット（[google/mozc](https://github.com/google/mozc) の
    master など）に書き換える
