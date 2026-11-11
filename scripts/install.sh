@@ -69,12 +69,14 @@ cat <<EOF
 
 完了。Emacs の初期化ファイルに次を追加してください:
 
+  ;; Google の mozc.el（今インストールしたもの）
+  (add-to-list 'load-path "$LIBEXEC")
+  ;; egg-mozc
   (add-to-list 'load-path "$ROOT/lisp")
   (setq egg-mozc-libexec-directory "$LIBEXEC/")
   (require 'egg-mozc)
   (setq default-input-method "japanese-egg-mozc")
 
-mozc.el を MELPA から入れていない場合は、先に次も追加してください:
-
-  (add-to-list 'load-path "$LIBEXEC")
+MELPA の mozc パッケージを使う場合は、最初の load-path の行を除いてください
+（README.md の「MELPA の mozc パッケージを使う場合」を参照）。
 EOF

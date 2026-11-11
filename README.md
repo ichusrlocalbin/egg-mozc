@@ -24,8 +24,10 @@ Egg-Anthy に慣れた人が、操作を変えずに変換エンジンだけを 
   - Xcode（またはコマンドラインツール）
   - [Bazelisk](https://github.com/bazelbuild/bazelisk)（`brew install bazelisk`）
   - git、python3
-- Emacs パッケージ [mozc](https://melpa.org/#/mozc)（MELPA）。
-  MELPA を使わない場合は、ビルドで作られる `mozc.el` を使える（後述）
+
+egg-mozc は、Mozc と通信するために Google の `mozc.el` を使います。`mozc.el` は
+`scripts/build.sh` が Mozc のソースから取り出してインストールするので、別に用意する必要はありません
+（MELPA の `mozc` パッケージを使うこともできます。後述）。
 
 ## インストール
 
@@ -62,25 +64,50 @@ Mach サービスで通信します。そのため IME 本体を入れない場�
 
 ### 3. Emacs の設定
 
+初期化ファイル（`~/.emacs.d/init.el` など）に次を追加します。`/path/to/egg-mozc` は clone した場所です。
+
 ```elisp
-;; MELPA の mozc パッケージを使う場合（package-initialize のあと）
+;; Google の mozc.el（scripts/install.sh がインストールしたもの）
+(add-to-list 'load-path "~/.local/libexec/egg-mozc")
+;; egg-mozc
 (add-to-list 'load-path "/path/to/egg-mozc/lisp")
 (require 'egg-mozc)
 (setq default-input-method "japanese-egg-mozc")
 ```
 
-MELPA を使わない場合は、ビルドした helper と同じバージョンの `mozc.el` がインストール先にあるので、
-先に load-path に加えます。
-
-```elisp
-(add-to-list 'load-path "~/.local/libexec/egg-mozc")
-```
-
-`PREFIX` を変えてインストールした場合は、`(require 'egg-mozc)` の前に場所を指定します。
+`PREFIX` を変えてインストールした場合は、`~/.local` の部分を変え、`(require 'egg-mozc)` の前に
+次も追加します。
 
 ```elisp
 (setq egg-mozc-libexec-directory "/your/prefix/libexec/egg-mozc/")
 ```
+
+#### MELPA の mozc パッケージを使う場合
+
+すでに MELPA で `mozc` パッケージ（Google の `mozc.el`）を入れている場合は、そちらを使うこともできます。
+ただし、`mozc.el` と、ビルドした `mozc_emacs_helper` のバージョンが離れていると、うまく通信できない
+ことがあります。迷ったら上の方法（ビルドで作られる `mozc.el`）を使ってください。
+
+1. MELPA を使えるようにしていなければ、初期化ファイルに追加します。
+
+   ```elisp
+   (require 'package)
+   (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
+   (package-initialize)
+   ```
+
+2. `M-x package-refresh-contents`、続けて `M-x package-install RET mozc RET` を実行します。
+
+3. 初期化ファイルの設定から、`~/.local/libexec/egg-mozc` を load-path に加える行を除きます
+   （両方あると、どちらの `mozc.el` が読み込まれるかが load-path の順序で決まり、紛らわしくなります）。
+
+   ```elisp
+   (add-to-list 'load-path "/path/to/egg-mozc/lisp")
+   (require 'egg-mozc)          ; package-initialize より後に書く
+   (setq default-input-method "japanese-egg-mozc")
+   ```
+
+どちらの方法でも、helper（`mozc_emacs_helper`）は `scripts/install.sh` がインストールしたものが使われます。
 
 ## 使い方
 
