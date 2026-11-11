@@ -79,6 +79,37 @@ scripts/install.sh の PREFIX を変えた場合は、PREFIX/libexec/egg-mozc/ �
     (setq-local inhibit-point-motion-hooks nil)))
 (add-hook 'egg-mode-hook #'egg-mozc--enable-point-motion-hooks)
 
+;;; 数字の入力
+
+(defcustom egg-mozc-halfwidth-digits t
+  "non-nil なら、ひらがな・カタカナの入力中に数字を半角（123）で入れる。
+全角の数字は、入力中に Z に続けて数字（Z1 → １）を打つか、変換中に M-> で入れる。
+nil なら Egg の既定のまま（`its-hira-enable-zenkaku-alphabet' が t なら全角）。
+記号（！、？ など）は変えない。ひらがなの入力を始める前に設定すること。"
+  :type 'boolean
+  :group 'egg-mozc)
+
+(declare-function its-defrule "its")
+(defvar its-current-map)
+
+(defun egg-mozc--add-halfwidth-digit-rules (map)
+  "ITS の変換表 MAP（シンボル）で、数字を半角にする規則を加える。
+MAP がまだ読み込まれていなければ、読み込まれたときに加える。
+（its.el の `define-its-state-machine-append' と同じことを関数で行う）"
+  (let ((func (lambda ()
+                (when egg-mozc-halfwidth-digits
+                  (let ((its-current-map map))
+                    (dotimes (i 10)
+                      (let ((digit (number-to-string i)))
+                        (its-defrule digit digit nil t))))))))
+    (if (boundp map)
+        (funcall func)
+      (add-hook (intern (concat (symbol-name map) "-hook")) func t))))
+
+(with-eval-after-load 'its
+  (egg-mozc--add-halfwidth-digit-rules 'its-hira-map)
+  (egg-mozc--add-halfwidth-digit-rules 'its-kata-map))
+
 ;;; 入力メソッドの登録
 
 (autoload 'egg-activate-mozc "egg/mozc"

@@ -187,20 +187,30 @@ EMACS=/Applications/Emacs.app/Contents/MacOS/Emacs scripts/compile.sh
 | M-s | — | 候補一覧から選ぶ |
 | C-c / C-g | 入力を取り消す | 変換を取り消す（入力中に戻る） |
 
-### 全角数字と半角カタカナの候補
+### 全角数字と半角カタカナ
 
-Mozc は「１２３」「１語」のような全角数字や、「ｶｲｷﾞ」のような半角カタカナも候補に出しますが、
-egg-mozc では既定でこれらを候補一覧（SPC、C-n、M-s）から外しています。
-入力したいときは、変換中に `M-<`（半角）や `M->`（全角）を押します。
+egg-mozc では、既定で全角数字と半角カタカナが出ないようにしています。
 
-- 「会議」「カイギ」で `M-<` → 「ｶｲｷﾞ」
-- 「123」「1語」で `M->` → 「１２３」「１語」
+- 入力中の数字は半角になります（`123` → 「123」）。Egg の本来の既定は全角（「１２３」）です。
+  記号（！、？ など）は全角のままです。
+- Mozc は「１２３」「１語」のような全角数字や、「ｶｲｷﾞ」のような半角カタカナも候補に出しますが、
+  これらを候補一覧（SPC、C-n、M-s）から外しています。
+
+入力したいときは、次のようにします。
+
+- 入力中に `Z` に続けて数字を打つ（`Z1` → 「１」）
+- 変換中に `M-<`（半角）や `M->`（全角）を押す
+  - 「会議」「カイギ」で `M-<` → 「ｶｲｷﾞ」
+  - 「123」「1語」で `M->` → 「１２３」「１語」
 
 隠す候補は `egg-mozc-hidden-candidate-regexp`（正規表現）で変えられます。
 `nil` にすると、Mozc の候補をすべて出します。
 
+入力中の数字を Egg の既定（全角）に戻すには、`egg-mozc-halfwidth-digits` を `nil` にします。
+
 ```elisp
-(setq egg-mozc-hidden-candidate-regexp nil)                 ; すべて出す
+(setq egg-mozc-halfwidth-digits nil)                        ; 入力中の数字を全角に
+(setq egg-mozc-hidden-candidate-regexp nil)                 ; 候補をすべて出す
 (setq egg-mozc-hidden-candidate-regexp "[\uff61-\uff9f]")  ; 半角カタカナだけ隠す
 ```
 
