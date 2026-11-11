@@ -100,7 +100,7 @@
 (if (and (fboundp 'make-coding-system)
          (null (get 'make-coding-system 'byte-obsolete-info)))
 ;; since Emacs 23.1, make-coding-system has been marked as obsolete. 
-    (eval-and-compile
+    (progn
 	(define-ccl-program ccl-decode-fixed-euc-jp
 	  `(2
 	    ((r2 = ,(charset-id 'japanese-jisx0208))
@@ -178,7 +178,7 @@
 (if (and (fboundp 'make-coding-system)
          (null (get 'make-coding-system 'byte-obsolete-info)))
 ;; since Emacs 23.1, make-coding-system has been marked as obsolete. 
-    (eval-and-compile
+    (progn
 (define-ccl-program ccl-decode-fixed-euc-kr
   `(2
     ((r2 = ,(charset-id 'korean-ksc5601))
@@ -685,6 +685,8 @@ Return the length of resulting text."
 (defun post-read-decode-euc-zy-tw (len)
   (post-read-decode-fixed-euc-china len 'tw t))
 
+;; Emacs 31: make-coding-system was removed (only used by Chinese Wnn)
+(when (fboundp (quote make-coding-system))
 (make-coding-system 'fixed-euc-py-cn 0 ?W
 		    "Coding System for fixed EUC Chinese-gb2312")
 (coding-system-put 'fixed-euc-py-cn
@@ -712,6 +714,7 @@ Return the length of resulting text."
 		   'pre-write-conversion 'pre-write-encode-euc-tw)
 (coding-system-put 'fixed-euc-zy-tw
 		   'post-read-conversion 'post-read-decode-euc-zy-tw)
+)
 
 ;; Binary data
 
@@ -733,8 +736,9 @@ Return the length of resulting text."
 	   (r0 = 0)))
       (write-read-repeat r0))))))
 
+(when (fboundp (quote make-coding-system))
 (make-coding-system 'egg-binary 4 ?W "Coding System for binary data"
-		    (cons ccl-decode-egg-binary ccl-encode-egg-binary))
+		    (cons ccl-decode-egg-binary ccl-encode-egg-binary)))
 
 
 (defun comm-format-u32c (uint32c)
