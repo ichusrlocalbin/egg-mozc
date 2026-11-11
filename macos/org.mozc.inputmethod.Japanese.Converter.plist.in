@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!--
+  Based on src/mac/installer/LaunchAgents/org.mozc.inputmethod.Japanese.Converter.plist
+  from Mozc (https://github.com/google/mozc). Copyright Google Inc.
+  Licensed under the BSD-3-Clause license; see macos/LICENSE.mozc.
+  egg-mozc change: the Program path (@MOZC_SERVER@ is replaced by scripts/install.sh).
+-->
 <plist version="1.0">
 <dict>
 	<key>Label</key>
