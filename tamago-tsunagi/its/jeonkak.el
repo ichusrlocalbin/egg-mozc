@@ -1,4 +1,4 @@
-;;; its/jeonkak.el --- Jeonkak ASCII Input in Egg Input Method Architecture
+;;; its/jeonkak.el --- Jeonkak ASCII Input in Egg Input Method Architecture  -*- lexical-binding: nil; -*-
 
 ;; Copyright (C) 1999,2000 PFU LIMITED
 

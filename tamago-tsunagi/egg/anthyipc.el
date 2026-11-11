@@ -1,4 +1,4 @@
-;;; egg/anthyipc.el --- ANTHY IPC Support (low level interface) in Egg
+;;; egg/anthyipc.el --- ANTHY IPC Support (low level interface) in Egg  -*- lexical-binding: nil; -*-
 ;;;                Input Method Architecture
 
 ;; Copyright (C) 2002 The Free Software Initiative of Japan

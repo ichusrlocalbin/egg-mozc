@@ -1,4 +1,4 @@
-;;; its/pinyin.el --- Pinyin Input in Egg Input Method Architecture
+;;; its/pinyin.el --- Pinyin Input in Egg Input Method Architecture  -*- lexical-binding: nil; -*-
 
 ;; Copyright (C) 1999,2000 PFU LIMITED
 

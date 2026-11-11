@@ -1,4 +1,4 @@
-;;; egg/anthy.el --- ANTHY Support (high level interface) in Egg
+;;; egg/anthy.el --- ANTHY Support (high level interface) in Egg  -*- lexical-binding: nil; -*-
 ;;;                Input Method Architecture
 
 ;; Copyright (C) 2002 The Free Software Initiative of Japan

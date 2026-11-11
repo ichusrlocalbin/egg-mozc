@@ -1,4 +1,4 @@
-;;; its-keydef.el
+;;; its-keydef.el  -*- lexical-binding: nil; -*-
 
 ;; Copyright (C) 1999, 2000 PFU LIMITED
 

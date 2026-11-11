@@ -1,4 +1,4 @@
-;;; docomp.el --- compile Egg files
+;;; docomp.el --- compile Egg files  -*- lexical-binding: nil; -*-
 
 ;; Copyright (C) 1999, 2000 Free Software Foundation, Inc
 

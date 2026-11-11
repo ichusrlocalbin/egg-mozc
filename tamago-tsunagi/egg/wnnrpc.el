@@ -1,4 +1,4 @@
-;;; egg/wnnrpc.el --- WNN Support (low level interface) in Egg
+;;; egg/wnnrpc.el --- WNN Support (low level interface) in Egg  -*- lexical-binding: nil; -*-
 ;;;                   Input Method Architecture
 
 ;; Copyright (C) 1999, 2000 Free Software Foundation, Inc

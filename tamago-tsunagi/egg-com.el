@@ -1,4 +1,4 @@
-;;; egg-com.el --- Communication Routines in Egg Input Method Architecture
+;;; egg-com.el --- Communication Routines in Egg Input Method Architecture  -*- lexical-binding: nil; -*-
 
 ;; Copyright (C) 1999, 2000 Free Software Foundation, Inc
 

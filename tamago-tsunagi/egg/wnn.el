@@ -1,4 +1,4 @@
-;;; egg/wnn.el --- WNN Support (high level interface) in Egg
+;;; egg/wnn.el --- WNN Support (high level interface) in Egg  -*- lexical-binding: nil; -*-
 ;;;                Input Method Architecture
 
 ;; Copyright (C) 1999,2000 PFU LIMITED

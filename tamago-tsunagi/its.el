@@ -1,4 +1,4 @@
-;;; its.el --- Input Translation System AKA "ITS(uDekirunDa!)"
+;;; its.el --- Input Translation System AKA "ITS(uDekirunDa!)"  -*- lexical-binding: nil; -*-
 
 ;; Copyright (C) 1999,2000 PFU LIMITED
 

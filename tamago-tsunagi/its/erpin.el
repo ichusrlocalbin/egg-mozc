@@ -1,4 +1,4 @@
-;;; its/erpin.el --- Erpin Input in Egg Input Method Architecture
+;;; its/erpin.el --- Erpin Input in Egg Input Method Architecture  -*- lexical-binding: nil; -*-
 
 ;; Copyright (C) 1999,2000 PFU LIMITED
 

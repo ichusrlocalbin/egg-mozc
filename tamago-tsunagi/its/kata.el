@@ -1,4 +1,4 @@
-;;; its/kata.el --- Katakana Input in Egg Input Method Architecture
+;;; its/kata.el --- Katakana Input in Egg Input Method Architecture  -*- lexical-binding: nil; -*-
 
 ;;;;;;;;;;;;;;;; About copyright notice ;;;;;;;;;;;;;;;;
 ;;;

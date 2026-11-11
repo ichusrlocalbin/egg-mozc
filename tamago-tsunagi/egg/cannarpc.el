@@ -1,4 +1,4 @@
-;;; egg/cannarpc.el --- Canna Support (low level interface) in
+;;; egg/cannarpc.el --- Canna Support (low level interface) in  -*- lexical-binding: nil; -*-
 ;;;                     Egg Input Method Architecture
 
 ;; Copyright (C) 1999, 2000 Free Software Foundation, Inc

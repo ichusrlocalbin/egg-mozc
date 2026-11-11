@@ -1,4 +1,4 @@
-;;; egg-mlh.el --- Modeless Conversion Facility in Egg Input
+;;; egg-mlh.el --- Modeless Conversion Facility in Egg Input  -*- lexical-binding: nil; -*-
 ;;;                   Method Architecture
 
 ;; Copyright (C) 1999, 2000 Free Software Foundation, Inc

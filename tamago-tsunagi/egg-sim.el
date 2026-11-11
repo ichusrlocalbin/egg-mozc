@@ -1,4 +1,4 @@
-;;; -*- coding: iso-2022-7bit -*-
+;;; -*- lexical-binding: nil; coding: iso-2022-7bit -*-
 ;;; egg-sim.el --- EGG Simple Input Method
 
 ;; Copyright (C) 2000 Electrotechnical Laboratory, JAPAN.

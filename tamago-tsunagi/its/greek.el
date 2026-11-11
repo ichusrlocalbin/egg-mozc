@@ -1,3 +1,4 @@
+;;; -*- lexical-binding: nil; -*-
 (eval-when-compile
   (require 'its)
   (require 'cl))

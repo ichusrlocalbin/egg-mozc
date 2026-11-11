@@ -1,4 +1,4 @@
-;;; egg.el --- EGG Input Method Architecture
+;;; egg.el --- EGG Input Method Architecture  -*- lexical-binding: nil; -*-
 
 ;; Copyright (C) 1999-2015 Free Software Foundation, Inc
 ;;               2014, 2015 Mitsutoshi NAKANO <bkbin005@rinku.zaq.ne.jp>

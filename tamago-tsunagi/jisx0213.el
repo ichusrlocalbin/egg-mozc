@@ -1,4 +1,4 @@
-;;; jisx0213.el --- Charset Definition for JIS X 0213
+;;; jisx0213.el --- Charset Definition for JIS X 0213  -*- lexical-binding: nil; -*-
 
 ;; Copyright (C) 1999,2000 PFU LIMITED
 
