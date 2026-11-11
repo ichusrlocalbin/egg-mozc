@@ -142,10 +142,11 @@ Mach サービスで通信します。そのため IME 本体を入れない場�
 （Emacs 30 以降では、さらにネイティブコンパイルも自動で行われます）。
 
 ```bash
-EMACS=/Applications/Emacs-31.1.app/Contents/MacOS/Emacs scripts/compile.sh
+EMACS=/Applications/Emacs.app/Contents/MacOS/Emacs scripts/compile.sh
 ```
 
-- `EMACS` には、egg-mozc を使う Emacs（30 以降）を指定します。`.elc` は、それを読み込む Emacs と
+- `EMACS` には、egg-mozc を使う Emacs（30 以降）を指定します。Emacs.app の名前や場所を変えている場合は、
+  そのパスにします（例：`EMACS=/Applications/Emacs-31.1.app/Contents/MacOS/Emacs`）。`.elc` は、それを読み込む Emacs と
   同じバージョンでコンパイルする必要があります（PATH の `emacs` が古い場合は止まります）。
 - Wnn、Canna、SJ3、Anthy 用のファイル（`tamago-tsunagi/egg/`）は使わないのでコンパイルしません。
 - Egg の `.el` を変更したり `git pull` したりしたら、もう一度実行してください。Emacs の既定では、

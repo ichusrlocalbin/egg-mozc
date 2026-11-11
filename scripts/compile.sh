@@ -6,7 +6,7 @@
 # コンパイルしなくても動くが、読み込みが速くなる（Emacs 30 以降ではネイティブコンパイルも
 # 自動で行われる）。
 #
-#   EMACS=/Applications/Emacs-31.1.app/Contents/MacOS/Emacs scripts/compile.sh
+#   EMACS=/Applications/Emacs.app/Contents/MacOS/Emacs scripts/compile.sh
 #
 # 環境変数:
 #   EMACS  コンパイルに使う Emacs（既定: PATH の emacs）。
@@ -27,7 +27,7 @@ command -v "$EMACS" >/dev/null || die "$EMACS が見つかりません。EMACS=/
 MAJOR="$("$EMACS" -Q --batch --eval '(princ emacs-major-version)' 2>/dev/null)" || die "$EMACS を実行できません"
 if [ "$MAJOR" -lt 30 ]; then
   die "${EMACS} は Emacs ${MAJOR} です。egg-mozc を使う Emacs（30 以降）を指定してください。
-  例: EMACS=/Applications/Emacs-31.1.app/Contents/MacOS/Emacs $0"
+  例: EMACS=/Applications/Emacs.app/Contents/MacOS/Emacs $0"
 fi
 
 # egg-mozc で使うファイル（Wnn、Canna、SJ3、Anthy 用の egg/*.el は使わないので除く）。
