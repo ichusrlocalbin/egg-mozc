@@ -54,9 +54,18 @@ scripts/build.sh
 scripts/install.sh
 ```
 
-- 実行ファイルを `~/.local/libexec/egg-mozc/` に入れる（`PREFIX=... scripts/install.sh` で変更できる）
+- 実行ファイルを `~/.local/libexec/egg-mozc/` に入れる
 - `mozc_server` を、ユーザー単位の LaunchAgent（`~/Library/LaunchAgents/org.mozc.inputmethod.Japanese.Converter.plist`）
   として登録する
+
+インストール先は `PREFIX` で変えられます。実行ファイルは `$PREFIX/libexec/egg-mozc/` に入ります。
+たとえば `~/usr` に入れる場合：
+
+```bash
+PREFIX=~/usr scripts/install.sh      # → ~/usr/libexec/egg-mozc/
+```
+
+アンインストールするときも、同じ `PREFIX` を指定します（`PREFIX=~/usr scripts/uninstall.sh`）。
 
 macOS 版の Mozc は、変換サーバー（`mozc_server`）を launchd 経由で起動し、launchd に登録された
 Mach サービスで通信します。そのため IME 本体を入れない場合でも、この登録が必要です。
@@ -76,10 +85,14 @@ Mach サービスで通信します。そのため IME 本体を入れない場�
 ```
 
 `PREFIX` を変えてインストールした場合は、`~/.local` の部分を変え、`(require 'egg-mozc)` の前に
-次も追加します。
+`egg-mozc-libexec-directory` も設定します。`PREFIX=~/usr` の場合：
 
 ```elisp
-(setq egg-mozc-libexec-directory "/your/prefix/libexec/egg-mozc/")
+(add-to-list 'load-path "~/usr/libexec/egg-mozc")
+(add-to-list 'load-path "/path/to/egg-mozc/lisp")
+(setq egg-mozc-libexec-directory "~/usr/libexec/egg-mozc/")
+(require 'egg-mozc)
+(setq default-input-method "japanese-egg-mozc")
 ```
 
 #### MELPA の mozc パッケージを使う場合（optional）
