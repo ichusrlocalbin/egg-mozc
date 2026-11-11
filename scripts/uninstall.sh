@@ -1,5 +1,5 @@
 #!/bin/bash
-# Copyright (c) 2026 egg-mozc contributors
+# Copyright (c) 2026 ichusrlocalbin
 # SPDX-License-Identifier: MIT
 #
 # scripts/install.sh でインストールしたものを削除する。

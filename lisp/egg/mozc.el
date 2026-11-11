@@ -1,6 +1,6 @@
 ;;; egg/mozc.el --- Mozc conversion backend for Egg  -*- lexical-binding: t; -*-
 
-;; Copyright (c) 2026 egg-mozc contributors
+;; Copyright (c) 2026 ichusrlocalbin
 ;; SPDX-License-Identifier: MIT
 
 ;;; Commentary:

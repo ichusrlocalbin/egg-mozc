@@ -1,10 +1,10 @@
 ;;; egg-mozc.el --- Use Mozc from the Egg (Tamago) input method  -*- lexical-binding: t; -*-
 
-;; Copyright (c) 2026 egg-mozc contributors
+;; Copyright (c) 2026 ichusrlocalbin
 ;; SPDX-License-Identifier: MIT
 
 ;; Keywords: i18n, input method, Japanese
-;; URL: https://github.com/OWNER/egg-mozc
+;; URL: https://github.com/ichusrlocalbin/egg-mozc
 ;; Package-Requires: ((emacs "30.1") (mozc "0"))
 
 ;;; Commentary:

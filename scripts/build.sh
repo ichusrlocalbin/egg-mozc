@@ -1,5 +1,5 @@
 #!/bin/bash
-# Copyright (c) 2026 egg-mozc contributors
+# Copyright (c) 2026 ichusrlocalbin
 # SPDX-License-Identifier: MIT
 #
 # Mozc を取得して、mozc_server、mozc_emacs_helper、mozc_user_dict をビルドする。

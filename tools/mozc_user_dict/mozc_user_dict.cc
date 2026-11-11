@@ -1,4 +1,4 @@
-// Copyright (c) 2026 egg-mozc contributors
+// Copyright (c) 2026 ichusrlocalbin
 // SPDX-License-Identifier: MIT
 //
 // mozc_user_dict: Mozc のユーザー辞書をコマンドラインから操作する（Emacs / Egg 用）。

@@ -32,7 +32,7 @@ Egg-Anthy に慣れた人が、操作を変えずに変換エンジンだけを 
 ### 1. 取得とビルド
 
 ```bash
-git clone https://github.com/OWNER/egg-mozc.git
+git clone https://github.com/ichusrlocalbin/egg-mozc.git
 cd egg-mozc
 scripts/build.sh
 ```
