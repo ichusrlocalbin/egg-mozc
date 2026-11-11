@@ -227,7 +227,7 @@
 				       menudiag-minibuffer-list))
   (if (boundp 'deactivate-input-method)
     (deactivate-input-method)
-    (inactivate-input-method))
+    (deactivate-input-method))
   (buffer-disable-undo)
   (menudiag-receive-variables)
   (menudiag-beginning-of-items)

@@ -170,7 +170,7 @@
 	  (setq egg-modefull-mode t)
 	  (its-define-select-keys egg-modefull-map))
       (setq egg-modeless-mode t))
-    (set (if (fboundp 'deactivate-current-input-method-function)
+    (set (if (boundp (quote deactivate-current-input-method-function))
 	     'deactivate-current-input-method-function
 	   'inactivate-current-input-method-function)
 	 'egg-mode)
@@ -185,7 +185,7 @@
 (defun egg-exit-from-minibuffer ()
   (if (fboundp 'deactivate-input-method)
       (deactivate-input-method)
-    (inactivate-input-method))
+    (deactivate-input-method))
   (if (<= (minibuffer-depth) 1)
       (remove-hook 'minibuffer-exit-hook 'egg-exit-from-minibuffer)))
 
