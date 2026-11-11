@@ -82,7 +82,7 @@ Mach サービスで通信します。そのため IME 本体を入れない場�
 (setq egg-mozc-libexec-directory "/your/prefix/libexec/egg-mozc/")
 ```
 
-#### MELPA の mozc パッケージを使う場合
+#### MELPA の mozc パッケージを使う場合（optional）
 
 すでに MELPA で `mozc` パッケージ（Google の `mozc.el`）を入れている場合は、そちらを使うこともできます。
 ただし、`mozc.el` と、ビルドした `mozc_emacs_helper` のバージョンが離れていると、うまく通信できない

@@ -78,5 +78,5 @@ cat <<EOF
   (setq default-input-method "japanese-egg-mozc")
 
 MELPA の mozc パッケージを使う場合は、最初の load-path の行を除いてください
-（README.md の「MELPA の mozc パッケージを使う場合」を参照）。
+（README.md の「MELPA の mozc パッケージを使う場合（optional）」を参照）。
 EOF
