@@ -1,0 +1,23 @@
+# Copyright (c) 2026 egg-mozc contributors
+# SPDX-License-Identifier: MIT
+#
+# scripts/build.sh がこのディレクトリを Mozc のソースツリーの
+# src/unix/emacs/egg_mozc/ にコピーしてビルドする。
+#   bazelisk build //unix/emacs/egg_mozc:mozc_user_dict
+
+load("//:build_defs.bzl", "mozc_cc_binary")
+
+package(default_visibility = ["//visibility:private"])
+
+mozc_cc_binary(
+    name = "mozc_user_dict",
+    srcs = ["mozc_user_dict.cc"],
+    deps = [
+        "//client",
+        "//client/user_dictionary:user_dictionary_storage",
+        "//protocol:user_dictionary_storage_cc_proto",
+        "@com_google_absl//absl/status",
+        "@com_google_absl//absl/status:statusor",
+        "@com_google_absl//absl/strings",
+    ],
+)
