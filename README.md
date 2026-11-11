@@ -48,6 +48,20 @@ scripts/build.sh
 
 初回は、Bazel 本体と依存ライブラリのダウンロードを含めて数分〜数十分かかります。
 
+ダウンロードしたものとキャッシュは、すべて `build/` の下に作ります（`~/Library/Caches` は使いません）。
+合わせて 1GB ほどになります。
+
+| 場所 | 中身 |
+|---|---|
+| `build/mozc/` | Mozc のソース |
+| `build/bazelisk/` | Bazel 本体（Bazelisk がダウンロードしたもの） |
+| `build/bazel/` | 依存ライブラリのダウンロードと、ビルド途中の生成物 |
+| `build/bin/` | できた実行ファイルと `mozc.el` |
+
+インストールしたあとは、`scripts/clean.sh` で `build/` をまとめて削除できます
+（インストールしたものは消えません）。`build/bazel/` には書き込み禁止のファイルがあるため、
+`rm -rf build` ではなく `scripts/clean.sh` を使ってください。
+
 ### 2. インストール
 
 ```bash
