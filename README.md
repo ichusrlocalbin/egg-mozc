@@ -254,6 +254,31 @@ scripts/uninstall.sh
 LaunchAgent と実行ファイルを削除します。Mozc の学習データとユーザー辞書
 （`~/Library/Application Support/Mozc/`）は残します。
 
+## Mozc の新しい版に追いつく（想定手順・未確認）
+
+egg-mozc は、ビルドする Mozc を `scripts/mozc-commit` に書いたコミットに固定しています。
+何もしなければ、何度ビルドしても同じ Mozc になり、インストールしたものもそのまま使い続けられます。
+Mozc の新しい版（辞書の更新やバグ修正）を取り込みたいときだけ、次のようにします。
+
+**以下は想定している手順で、実際に新しい版で試したわけではありません。**
+
+1. `scripts/mozc-commit` を、取り込みたい Mozc のコミット（[google/mozc](https://github.com/google/mozc) の
+   master など）に書き換える
+2. `scripts/build.sh` でビルドし、`scripts/install.sh` でインストールする
+3. Emacs を起動し直して、変換・文節の伸縮・単語登録（`egg-toroku-region`）ができるか確かめる
+4. 問題なければ `scripts/mozc-commit` の変更をコミットする。問題があれば元のコミットに戻してビルドし直す
+
+うまくいかない可能性があるところ：
+
+- egg-mozc が使っている Mozc の部分（`mozc_emacs_helper` と、`mozc_user_dict` が使うユーザー辞書の部品
+  `//client/user_dictionary:user_dictionary_storage`）の作りが変わると、ビルドや動作に失敗します
+- MELPA の mozc パッケージを使っている場合は、helper と `mozc.el` のバージョンが離れていきます。
+  ビルドで作られる `mozc.el` を使えば、helper と同じ版になります
+
+古いコミットのままにしておくと、何年か先に新しい macOS や Xcode でビルドし直そうとしたとき、
+依存ライブラリの取得やコンパイルに失敗する可能性があります。インストール済みのものが動いている
+あいだは、気にする必要はありません。
+
 ## 注意と制限
 
 - Mozc の IME（`/Library/Input Methods/Mozc.app`）とは、同じ名前の LaunchAgent を使うので同時に使えません
