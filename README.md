@@ -179,6 +179,8 @@ Emacs
 | `its.el` | Emacs 30 からシンボル表（obarray）が専用の型になった | `make-vector` を `obarray-make` に変更 |
 | `egg-com.el` | 削除された `make-coding-system` を呼んでいる | 呼び出しを条件付きにした（Wnn などのネットワーク用で、Mozc では使わない） |
 | `egg.el`、`menudiag.el` | 削除された `inactivate-input-method` などを使っている | `deactivate-input-method` に変更 |
+| すべての `.el` | `lexical-binding` の指定がなく、読み込むたびに警告が出る | 1行目に `lexical-binding: nil` を追加（Egg は動的スコープ前提のため） |
+| `its.el` | `?[` `?]` の文字リテラルで警告が出る | `?\[` `?\]` に変更 |
 
 Egg のファイルを変えずに `lisp/egg-mozc.el` で対応しているもの：
 
