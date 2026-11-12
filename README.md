@@ -76,84 +76,11 @@ scripts/build.sh
 （インストールしたものは消えません）。`build/bazel/` には書き込み禁止のファイルがあるため、
 `rm -rf build` ではなく `scripts/clean.sh` を使ってください。
 
-### 2. インストール
-
-```bash
-scripts/install.sh
-```
-
-- 実行ファイルを `~/.local/libexec/egg-mozc/` に入れる
-- `mozc_server` を、ユーザー単位の LaunchAgent（`~/Library/LaunchAgents/org.mozc.inputmethod.Japanese.Converter.plist`）
-  として登録する
-
-インストール先は `PREFIX` で変えられます。実行ファイルは `$PREFIX/libexec/egg-mozc/` に入ります。
-たとえば `~/usr` に入れる場合：
-
-```bash
-PREFIX=~/usr scripts/install.sh      # → ~/usr/libexec/egg-mozc/
-```
-
-アンインストールするときも、同じ `PREFIX` を指定します（`PREFIX=~/usr scripts/uninstall.sh`）。
-
-macOS 版の Mozc は、変換サーバー（`mozc_server`）を launchd 経由で起動し、launchd に登録された
-Mach サービスで通信します。そのため IME 本体を入れない場合でも、この登録が必要です。
-サーバーが常に動き続けることはなく、Emacs から要求があったときだけ起動します。
-
-### 3. Emacs の設定
-
-初期化ファイル（`~/.emacs.d/init.el` など）に次を追加します。`/path/to/egg-mozc` は clone した場所です。
-
-```elisp
-;; Google の mozc.el（scripts/install.sh がインストールしたもの）
-(add-to-list 'load-path "~/.local/libexec/egg-mozc")
-;; egg-mozc
-(add-to-list 'load-path "/path/to/egg-mozc/lisp")
-(require 'egg-mozc)
-(setq default-input-method "japanese-egg-mozc")
-```
-
-`PREFIX` を変えてインストールした場合は、`~/.local` の部分を変え、`(require 'egg-mozc)` の前に
-`egg-mozc-libexec-directory` も設定します。`PREFIX=~/usr` の場合：
-
-```elisp
-(add-to-list 'load-path "~/usr/libexec/egg-mozc")
-(add-to-list 'load-path "/path/to/egg-mozc/lisp")
-(setq egg-mozc-libexec-directory "~/usr/libexec/egg-mozc/")
-(require 'egg-mozc)
-(setq default-input-method "japanese-egg-mozc")
-```
-
-#### MELPA の mozc パッケージを使う場合（optional）
-
-すでに MELPA で `mozc` パッケージ（Google の `mozc.el`）を入れている場合は、そちらを使うこともできます。
-ただし、`mozc.el` と、ビルドした `mozc_emacs_helper` のバージョンが離れていると、うまく通信できない
-ことがあります。迷ったら上の方法（ビルドで作られる `mozc.el`）を使ってください。
-
-1. MELPA を使えるようにしていなければ、初期化ファイルに追加します。
-
-   ```elisp
-   (require 'package)
-   (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
-   (package-initialize)
-   ```
-
-2. `M-x package-refresh-contents`、続けて `M-x package-install RET mozc RET` を実行します。
-
-3. 初期化ファイルの設定から、`~/.local/libexec/egg-mozc` を load-path に加える行を除きます
-   （両方あると、どちらの `mozc.el` が読み込まれるかが load-path の順序で決まり、紛らわしくなります）。
-
-   ```elisp
-   (add-to-list 'load-path "/path/to/egg-mozc/lisp")
-   (require 'egg-mozc)          ; package-initialize より後に書く
-   (setq default-input-method "japanese-egg-mozc")
-   ```
-
-どちらの方法でも、helper（`mozc_emacs_helper`）は `scripts/install.sh` がインストールしたものが使われます。
-
-### 4. Egg のバイトコンパイル（optional）
+### 2. Egg のバイトコンパイル（optional）
 
 同梱の Egg は、コンパイルしなくてもそのまま動きます。コンパイルすると読み込みが速くなります
 （Emacs 30 以降では、さらにネイティブコンパイルも自動で行われます）。
+コンパイルは、次のインストールの**前**に行います（`scripts/install.sh` が `.elc` も一緒にコピーします）。
 
 ```bash
 EMACS=/Applications/Emacs.app/Contents/MacOS/Emacs scripts/compile.sh
@@ -163,12 +90,71 @@ EMACS=/Applications/Emacs.app/Contents/MacOS/Emacs scripts/compile.sh
   そのパスにします（例：`EMACS=/Applications/Emacs-31.1.app/Contents/MacOS/Emacs`）。`.elc` は、それを読み込む Emacs と
   同じバージョンでコンパイルする必要があります（PATH の `emacs` が古い場合は止まります）。
 - Wnn、Canna、SJ3、Anthy 用のファイル（`tamago-tsunagi/egg/`）は使わないのでコンパイルしません。
-- Egg の `.el` を変更したり `git pull` したりしたら、もう一度実行してください。Emacs の既定では、
+- Egg の `.el` を変更したり `git pull` したりしたら、もう一度実行し、続けて `scripts/install.sh` も実行してください。Emacs の既定では、
   `.el` のほうが新しくても `.elc` が優先して読み込まれます。
 - コンパイルしたあと最初に起動したときに、ネイティブコンパイルの警告（「関数の定義が見つからない」など）が
   `*Warnings*` に出ることがあります。Egg のファイル同士が互いの関数を使っているためで、動作には影響しません。
 - `.elc` を消すときは `scripts/clean.sh --elc` を使います（`scripts/clean.sh` だけでは `build/` しか消しません。
   両方を消すときは `--all`）。
+
+### 3. インストール
+
+```bash
+scripts/install.sh
+```
+
+| 入るもの | 場所 |
+|---|---|
+| `mozc_server`、`mozc_emacs_helper`、`mozc_user_dict` | `~/.local/libexec/egg-mozc/` |
+| egg-mozc の Lisp、同梱の Egg（`tamago-tsunagi/`）、ビルドで作られた `mozc.el`（`mozc/`） | `~/.local/share/emacs/site-lisp/egg-mozc/` |
+| LaunchAgent（`mozc_server` をユーザー単位で登録） | `~/Library/LaunchAgents/org.mozc.inputmethod.Japanese.Converter.plist` |
+
+インストールしたあとは、clone した作業ディレクトリがなくても動きます。
+`git pull` などで更新したときは、もう一度 `scripts/install.sh` を実行してください
+（前回入れた Lisp は消してから入れ直します）。
+
+インストール先は `PREFIX` で変えられます。たとえば `~/usr` に入れる場合：
+
+```bash
+PREFIX=~/usr scripts/install.sh   # → ~/usr/libexec/egg-mozc/、~/usr/share/emacs/site-lisp/egg-mozc/
+```
+
+`PREFIX` を指定するのはインストール（とアンインストール）のときだけです。ビルドのときは要りません。
+アンインストールするときも、同じ `PREFIX` を指定します（`PREFIX=~/usr scripts/uninstall.sh`）。
+
+LaunchAgent がすでに同じ場所の `mozc_server` を指して登録されている場合（入れ直すときなど）は、
+`scripts/install.sh --no-launchagent` で登録をとばせます。
+
+macOS 版の Mozc は、変換サーバー（`mozc_server`）を launchd 経由で起動し、launchd に登録された
+Mach サービスで通信します。そのため IME 本体を入れない場合でも、この登録が必要です。
+サーバーが常に動き続けることはなく、Emacs から要求があったときだけ起動します。
+
+### 4. Emacs の設定
+
+初期化ファイル（`~/.emacs.d/init.el` など）に次を追加します。
+
+```elisp
+(add-to-list 'load-path "~/.local/share/emacs/site-lisp/egg-mozc")
+(require 'egg-mozc)
+(setq default-input-method "japanese-egg-mozc")
+```
+
+`PREFIX=~/usr` でインストールした場合は、1行目を `"~/usr/share/emacs/site-lisp/egg-mozc"` にします。
+helper の場所（`$PREFIX/libexec/egg-mozc/`）と `mozc.el` は、egg-mozc がインストール先から自動で見つけます。
+
+#### MELPA の mozc パッケージを使う場合（optional）
+
+ふつうは不要です。egg-mozc は、ビルドで作られた `mozc.el`（helper と同じ版）を使います。
+MELPA で `mozc` パッケージ（Google の `mozc.el`）をすでに入れていて、そちらを使いたい場合だけ、
+`(require 'egg-mozc)` の前に次を書きます。
+
+```elisp
+(setq egg-mozc-mozc-el-directory nil)   ; load-path にある mozc.el（MELPA のもの）を使う
+```
+
+`package-initialize` より後に書いてください。`mozc.el` と、ビルドした `mozc_emacs_helper` のバージョンが
+離れていると、うまく通信できないことがあります。どちらの場合も、helper（`mozc_emacs_helper`）は
+`scripts/install.sh` がインストールしたものが使われます。
 
 ## 使い方
 
@@ -293,8 +279,8 @@ startup --host_jvm_args=-Djavax.net.ssl.trustStoreType=PKCS12
 scripts/uninstall.sh
 ```
 
-LaunchAgent と実行ファイルを削除します。Mozc の学習データとユーザー辞書
-（`~/Library/Application Support/Mozc/`）は残します。
+LaunchAgent、実行ファイル、インストールした Lisp を削除します。`PREFIX` を指定してインストールした場合は、
+同じ `PREFIX` を指定します。Mozc の学習データとユーザー辞書（`~/Library/Application Support/Mozc/`）は残します。
 
 ## Mozc の新しい版に追いつく（想定手順・未確認）
 
@@ -315,8 +301,8 @@ Mozc の新しい版（辞書の更新やバグ修正）を取り込みたいと
 
 - egg-mozc が使っている Mozc の部分（`mozc_emacs_helper` と、`mozc_user_dict` が使うユーザー辞書の部品
   `//client/user_dictionary:user_dictionary_storage`）の作りが変わると、ビルドや動作に失敗します
-- MELPA の mozc パッケージを使っている場合は、helper と `mozc.el` のバージョンが離れていきます。
-  ビルドで作られる `mozc.el` を使えば、helper と同じ版になります
+- MELPA の mozc パッケージを使っている場合（`egg-mozc-mozc-el-directory` が nil）は、helper と `mozc.el` の
+  バージョンが離れていきます。既定のまま（ビルドで作られる `mozc.el`）なら、helper と同じ版になります
 
 古いコミットのままにしておくと、何年か先に新しい macOS や Xcode でビルドし直そうとしたとき、
 依存ライブラリの取得やコンパイルに失敗する可能性があります。インストール済みのものが動いている

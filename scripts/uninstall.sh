@@ -12,6 +12,7 @@ set -euo pipefail
 
 PREFIX="${PREFIX:-$HOME/.local}"
 LIBEXEC="$PREFIX/libexec/egg-mozc"
+SITE_LISP="$PREFIX/share/emacs/site-lisp/egg-mozc"
 LABEL="org.mozc.inputmethod.Japanese.Converter"
 PLIST="$HOME/Library/LaunchAgents/$LABEL.plist"
 
@@ -27,5 +28,8 @@ for f in mozc_server mozc_emacs_helper mozc_user_dict mozc.el; do
   [ -e "$LIBEXEC/$f" ] && /bin/rm -f "$LIBEXEC/$f" && echo "削除: $LIBEXEC/$f"
 done
 rmdir "$LIBEXEC" 2>/dev/null || true
+if [ -d "$SITE_LISP" ]; then
+  /bin/rm -rf "$SITE_LISP" && echo "削除: $SITE_LISP"
+fi
 
 echo "完了。Mozc のデータ（~/Library/Application Support/Mozc/）は残しています。"

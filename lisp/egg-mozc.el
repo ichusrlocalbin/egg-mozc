@@ -12,12 +12,25 @@
 ;; Egg（たまご、tamago-tsunagi）の画面とキー操作のまま、
 ;; かな漢字変換に Mozc を使うための入口のファイル。
 ;;
-;;   (add-to-list 'load-path "/path/to/egg-mozc/lisp")
+;;   (add-to-list 'load-path "~/.local/share/emacs/site-lisp/egg-mozc")
 ;;   (require 'egg-mozc)
 ;;   (setq default-input-method "japanese-egg-mozc")
 ;;
+;; scripts/install.sh は、Lisp 一式を PREFIX/share/emacs/site-lisp/egg-mozc/ に、
+;; 実行ファイルを PREFIX/libexec/egg-mozc/ に入れる（PREFIX の既定は ~/.local）。
+;;
+;;   PREFIX/share/emacs/site-lisp/egg-mozc/
+;;     egg-mozc.el、egg/mozc.el   このパッケージ
+;;     tamago-tsunagi/            Egg 本体
+;;     mozc/mozc.el               Google の mozc.el（Mozc のビルドでできたもの）
+;;   PREFIX/libexec/egg-mozc/
+;;     mozc_server、mozc_emacs_helper、mozc_user_dict
+;;
+;; リポジトリの lisp/ を直接 load-path に加えても動く（開発用）。その場合は
+;; tamago-tsunagi は ../tamago-tsunagi/ を使う。
+;;
 ;; このファイルがすること：
-;; - 同梱の tamago-tsunagi を load-path に加える
+;; - tamago-tsunagi と mozc.el を load-path に加える
 ;; - 入力メソッド "japanese-egg-mozc" を登録する
 ;; - mozc_emacs_helper などの場所を設定する
 ;; - Emacs 31 で Egg を動かすための互換処理を入れる
@@ -35,21 +48,45 @@
   (file-name-directory (or load-file-name buffer-file-name))
   "egg-mozc の Lisp ファイルがあるディレクトリ。")
 
+(defun egg-mozc--first-directory (&rest dirs)
+  "DIRS のうち、最初に存在するディレクトリを返す。なければ最初のものを返す。"
+  (let ((found (car dirs)))
+    (catch 'found
+      (dolist (dir dirs)
+        (when (file-directory-p dir) (setq found dir) (throw 'found nil))))
+    found))
+
 (defcustom egg-mozc-tamago-directory
-  (expand-file-name "../tamago-tsunagi/" egg-mozc-lisp-directory)
+  (egg-mozc--first-directory
+   (expand-file-name "tamago-tsunagi/" egg-mozc-lisp-directory)      ; インストール先
+   (expand-file-name "../tamago-tsunagi/" egg-mozc-lisp-directory))  ; リポジトリ
   "同梱の tamago-tsunagi（Egg）のディレクトリ。"
   :type 'directory
   :group 'egg-mozc)
 
 (defcustom egg-mozc-libexec-directory
-  (expand-file-name "~/.local/libexec/egg-mozc/")
+  (egg-mozc--first-directory
+   ;; PREFIX/share/emacs/site-lisp/egg-mozc/ から見た PREFIX/libexec/egg-mozc/
+   (expand-file-name "../../../../libexec/egg-mozc/" egg-mozc-lisp-directory)
+   (expand-file-name "~/.local/libexec/egg-mozc/"))
   "mozc_emacs_helper と mozc_user_dict をインストールしたディレクトリ。
-scripts/install.sh の PREFIX を変えた場合は、PREFIX/libexec/egg-mozc/ にする。"
+既定では、egg-mozc.el のインストール先と同じ PREFIX の libexec/egg-mozc/ を使う。"
   :type 'directory
+  :group 'egg-mozc)
+
+(defcustom egg-mozc-mozc-el-directory
+  (let ((dir (expand-file-name "mozc/" egg-mozc-lisp-directory)))
+    (and (file-exists-p (expand-file-name "mozc.el" dir)) dir))
+  "Google の mozc.el があるディレクトリ。load-path の先頭に加える。
+既定は、scripts/install.sh が入れたもの（helper と同じ Mozc のビルドでできたもの）。
+MELPA の mozc パッケージなど、load-path にある別の mozc.el を使うときは nil にする。"
+  :type '(choice (const :tag "load-path の mozc.el を使う" nil) directory)
   :group 'egg-mozc)
 
 (add-to-list 'load-path egg-mozc-tamago-directory)
 (add-to-list 'load-path egg-mozc-lisp-directory)
+(when egg-mozc-mozc-el-directory
+  (add-to-list 'load-path egg-mozc-mozc-el-directory))
 
 ;;; mozc.el（Google）の設定
 
