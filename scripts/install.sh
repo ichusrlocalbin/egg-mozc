@@ -70,7 +70,15 @@ install -p -m 644 "$ROOT/lisp/egg/mozc.el" "$SITE_LISP/egg/"
 [ -f "$ROOT/lisp/egg/mozc.elc" ] && install -p -m 644 "$ROOT/lisp/egg/mozc.elc" "$SITE_LISP/egg/"
 cp -Rp "$ROOT/tamago-tsunagi" "$SITE_LISP/tamago-tsunagi"
 if [ -f "$BUILD_DIR/bin/mozc.el" ]; then
-  install -p -m 644 "$BUILD_DIR/bin/mozc.el" "$SITE_LISP/mozc/"
+  # Google の mozc.el には lexical-binding の cookie がなく、Emacs 31 で読むと警告が出る。
+  # mozc.el は動的スコープの前提で書かれているので、1行目に lexical-binding: nil を足す
+  # （動作は変わらない）。すでに cookie があればそのままコピーする。
+  if head -n 1 "$BUILD_DIR/bin/mozc.el" | grep -q 'lexical-binding'; then
+    install -p -m 644 "$BUILD_DIR/bin/mozc.el" "$SITE_LISP/mozc/"
+  else
+    sed '1s/$/  -*- lexical-binding: nil; -*-/' "$BUILD_DIR/bin/mozc.el" > "$SITE_LISP/mozc/mozc.el"
+    chmod 644 "$SITE_LISP/mozc/mozc.el"
+  fi
 else
   echo "warning: $BUILD_DIR/bin/mozc.el がありません。MELPA の mozc パッケージなどを使ってください" >&2
 fi
