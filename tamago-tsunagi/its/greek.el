@@ -1,4 +1,4 @@
-;;; -*- lexical-binding: nil; -*-
+;;; -*- lexical-binding: nil; byte-compile-warnings: (not unresolved); -*-
 (eval-when-compile
   (require 'its)
   (require 'cl))

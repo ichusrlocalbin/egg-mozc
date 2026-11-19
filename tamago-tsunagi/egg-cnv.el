@@ -1,4 +1,4 @@
-;;; egg-cnv.el --- Conversion Backend in Egg Input Method Architecture  -*- lexical-binding: nil; -*-
+;;; egg-cnv.el --- Conversion Backend in Egg Input Method Architecture  -*- lexical-binding: nil; byte-compile-warnings: (not unresolved); -*-
 ;;;;;;;;;;;;;;;; About copyright notice ;;;;;;;;;;;;;;;;
 ;;;
 ;;; This code was originally written by NIIBE Yutaka in 1997 and 1998.

@@ -1,4 +1,4 @@
-;;; menudiag.el --- Minibuffer Menu System  -*- lexical-binding: nil; -*-
+;;; menudiag.el --- Minibuffer Menu System  -*- lexical-binding: nil; byte-compile-warnings: (not unresolved); -*-
 
 ;; Copyright (C) 1999, 2000, 2015 Free Software Foundation, Inc
 ;;               2015 Hiroki Sato <hrs@allbsd.org>

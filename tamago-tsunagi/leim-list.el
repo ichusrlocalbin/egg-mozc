@@ -1,4 +1,4 @@
-;;; leim-list.el --- Egg setup for leim API  -*- lexical-binding: nil; -*-
+;;; leim-list.el --- Egg setup for leim API  -*- lexical-binding: nil; byte-compile-warnings: (not unresolved); -*-
 
 ;; Copyright (C) 1999, 2000, 2002 Free Software Foundation, Inc
 

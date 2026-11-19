@@ -1,4 +1,4 @@
-;;; its/thai.el --- Inputting Thai characters in Egg Input Method Architecture  -*- lexical-binding: nil; -*-
+;;; its/thai.el --- Inputting Thai characters in Egg Input Method Architecture  -*- lexical-binding: nil; byte-compile-warnings: (not unresolved); -*-
 
 ;; Copyright (C) 1999,2000 PFU LIMITED
 

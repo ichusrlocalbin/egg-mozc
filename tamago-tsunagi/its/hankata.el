@@ -1,4 +1,4 @@
-;;; its/hankata.el --- Hnakaku Katakana Input in Egg Input Method Architecture  -*- lexical-binding: nil; -*-
+;;; its/hankata.el --- Hnakaku Katakana Input in Egg Input Method Architecture  -*- lexical-binding: nil; byte-compile-warnings: (not unresolved); -*-
 
 ;; Copyright (C) 1999, 2000 Free Software Foundation, Inc
 

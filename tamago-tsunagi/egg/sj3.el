@@ -1,4 +1,4 @@
-;;; egg/sj3.el --- SJ3 Support (high level interface) in Egg  -*- lexical-binding: nil; -*-
+;;; egg/sj3.el --- SJ3 Support (high level interface) in Egg  -*- lexical-binding: nil; byte-compile-warnings: (not unresolved); -*-
 ;;;                Input Method Architecture
 
 ;; Copyright (C) 1999, 2000 Free Software Foundation, Inc

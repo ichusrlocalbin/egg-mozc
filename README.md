@@ -92,8 +92,9 @@ EMACS=/Applications/Emacs.app/Contents/MacOS/Emacs scripts/compile.sh
 - Wnn、Canna、SJ3、Anthy 用のファイル（`tamago-tsunagi/egg/`）は使わないのでコンパイルしません。
 - Egg の `.el` を変更したり `git pull` したりしたら、もう一度実行し、続けて `scripts/install.sh` も実行してください。Emacs の既定では、
   `.el` のほうが新しくても `.elc` が優先して読み込まれます。
-- コンパイルしたあと最初に起動したときに、ネイティブコンパイルの警告（「関数の定義が見つからない」など）が
-  `*Warnings*` に出ることがあります。Egg のファイル同士が互いの関数を使っているためで、動作には影響しません。
+- Egg のファイル同士は互いの関数を使っているため、そのままネイティブコンパイルすると「関数の定義が見つからない」
+  （`not known to be defined`）という警告がたくさん出ます。動作には影響しないので、同梱の Egg では各ファイルの1行目に
+  `byte-compile-warnings: (not unresolved)` を書いて、この警告だけを出さないようにしています。
 - `.elc` を消すときは `scripts/clean.sh --elc` を使います（`scripts/clean.sh` だけでは `build/` しか消しません。
   両方を消すときは `--all`）。
 

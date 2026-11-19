@@ -1,4 +1,4 @@
-;; egg-edep.el --- This file serves Emacs version dependent definitions  -*- lexical-binding: nil; -*-
+;; egg-edep.el --- This file serves Emacs version dependent definitions  -*- lexical-binding: nil; byte-compile-warnings: (not unresolved); -*-
 
 ;; Copyright (C) 1999,2000 PFU LIMITED
 

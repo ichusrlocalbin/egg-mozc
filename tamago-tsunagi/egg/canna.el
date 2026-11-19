@@ -1,4 +1,4 @@
-;;; egg/canna.el --- Canna Support (high level interface) in  -*- lexical-binding: nil; -*-
+;;; egg/canna.el --- Canna Support (high level interface) in  -*- lexical-binding: nil; byte-compile-warnings: (not unresolved); -*-
 ;;;                  Egg Input Method Architecture
 
 ;; Copyright (C) 1999, 2000 Free Software Foundation, Inc
